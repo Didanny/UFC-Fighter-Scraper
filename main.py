@@ -54,11 +54,26 @@ for fighter_href in fighter_hrefs:
     wins = record[0]
     losses = record[1]
     draws = record[2].split(',')[0]
-    summary = driver.find_element_by_id('fighter-skill-summary').get_attribute('innerText')
-    fighter_from = driver.find_element_by_id('fighter-from').get_attribute('innerText')
-    fighter_lives_in = driver.find_element_by_id('fighter-lives-in').get_attribute('innerText')
-    age = driver.find_element_by_id('fighter-age').get_attribute('innerText')
     
+    try:
+        summary = driver.find_element_by_id('fighter-skill-summary').get_attribute('innerText')
+    except:
+        summary = None
+
+    try:
+        fighter_from = driver.find_element_by_id('fighter-from').get_attribute('innerText')
+    except:
+        fighter_from = None        
+    
+    try:
+        fighter_lives_in = driver.find_element_by_id('fighter-lives-in').get_attribute('innerText')
+    except:
+        fighter_lives_in = None
+    
+    try:
+        age = driver.find_element_by_id('fighter-age').get_attribute('innerText')
+    except:
+        age = None   
 
     fighter = {
         'name': name,
