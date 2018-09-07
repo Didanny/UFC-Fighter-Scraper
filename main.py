@@ -48,45 +48,114 @@ fighters = []
 # Iterate over each fighter and store data
 for fighter_href in fighter_hrefs:
     driver.get(fighter_href)
-
-    name = driver.find_element_by_xpath('//meta[@property=\'og:title\']').get_attribute('content')
-    record = driver.find_element_by_id('fighter-skill-record').get_attribute('innerText').split('-')
-    wins = record[0]
-    losses = record[1]
-    draws = record[2].split(',')[0]
     
-    try:
-        summary = driver.find_element_by_id('fighter-skill-summary').get_attribute('innerText')
-    except:
-        summary = None
+    fighter = {}
 
     try:
-        fighter_from = driver.find_element_by_id('fighter-from').get_attribute('innerText')
+        fighter['name'] = driver.find_element_by_xpath('//meta[@property=\'og:title\']').get_attribute('content')
     except:
-        fighter_from = None        
+        pass
     
     try:
-        fighter_lives_in = driver.find_element_by_id('fighter-lives-in').get_attribute('innerText')
+        record = driver.find_element_by_id('fighter-skill-record').get_attribute('innerText').split('-')
+        fighter['record'] = {}
+        fighter['record']['wins'] = record[0]
+        fighter['record']['losses'] = record[1]
+        fighter['record']['draws'] = record[2].split(',')[0]
     except:
-        fighter_lives_in = None
+        pass
     
     try:
-        age = driver.find_element_by_id('fighter-age').get_attribute('innerText')
+        fighter['summary'] = driver.find_element_by_id('fighter-skill-summary').get_attribute('innerText')
     except:
-        age = None   
+        pass
 
-    fighter = {
-        'name': name,
-        'record': {
-            'wins': wins,
-            'losses': losses,
-            'draw': draws
-        },
-        'summary': summary,
-        'from': fighter_from,
-        'fights out of': fighter_lives_in,
-        'age': age
-    }
+    try:
+        fighter['from'] = driver.find_element_by_id('fighter-from').get_attribute('innerText')     
+    except:
+        pass
+    
+    try:
+        fighter['fights_out_of'] = driver.find_element_by_id('fighter-lives-in').get_attribute('innerText')
+    except:
+        pass
+    
+    try:
+        fighter['age'] = driver.find_element_by_id('fighter-age').get_attribute('innerText')
+    except:
+        pass
+        
+    try:
+        fighter['nickname'] = driver.find_element_by_id('fighter-nickname').get_attribute('innerText')
+    except:
+        pass
+
+    try:
+        height = driver.find_element_by_id('fighter-height').get_attribute('innerText').split(' ')
+        fighter['height_cm'] = height[3]
+        fighter['height_ft'] = height[0] + height[1]
+    except:
+        pass
+
+    try:
+        weight = driver.find_element_by_id('fighter-weight').get_attribute('innerText').split(' ')
+        fighter['weight_lb'] = weight[0]
+        fighter['weight_kg'] = weight[3]     
+    except:
+        pass
+        
+    try:
+        fighter['reach'] = driver.find_element_by_id('fighter-reach').get_attribute('innerText').split('"')[0]
+    except:
+        pass
+        
+    try:
+        fighter['leg_reach'] = driver.find_element_by_id('fighter-leg-reach').get_attribute('innerText').split('"')[0]
+    except:
+        pass
+        
+    try:
+        fighter['college'] = driver.find_element_by_id('fighter-college').get_attribute('innerText')
+    except:
+        pass
+        
+    try:
+        fighter['degree'] = driver.find_element_by_id('fighter-degree').get_attribute('innerText')
+    except:
+        pass
+    
+    try:
+        stats = driver.find_elements_by_class_name('bar-text')
+        fighter['strikes'] = {}
+        fighter['strikes']['total_successful'] = stats[1].get_attribute('innerText')
+        fighter['striking_types'] = {}
+        fighter['striking_types']['standing'] = stats[-11].get_attribute('innerText')
+        fighter['striking_types']['clinch'] = stats[-10].get_attribute('innerText')
+        fighter['striking_types']['ground'] = stats[-9].get_attribute('innerText')
+        fighter['takedowns'] = {}
+        fighter['takedowns']['total_successful'] = stats[-7].get_attribute('innerText')
+        fighter['grappling'] = {}
+        fighter['grappling']['submissions'] = stats[-3].get_attribute('innerText')
+        fighter['grappling']['passes'] = stats[-2].get_attribute('innerText')
+        fighter['grappling']['sweeps'] = stats[-1].get_attribute('innerText')
+        
+        stats = driver.find_elements_by_class_name('max-number')
+        fighter['strikes']['total_attempted'] = stats[0].get_attribute('innerText')
+        fighter['takedowns']['total_attempted'] = stats[2].get_attribute('innerText')
+    except:
+        pass
+    
+    try:
+        stats = driver.find_elements_by_css_selector('.cufon.cufon-canvas')
+        for i, stat in stats:
+            stat = stat.get_attribute('alt')
+            if stat == 'Striking':
+                fighter['striking_defense'] = stats[i + 1].get_attribute('alt')
+            if stats == 'Grappling':
+                fighter['takedown_defense'] = stats[i + 1].get_attribute('alt')
+    except:
+        pass
+            
         
     fighters.append(fighter)
 
@@ -94,4 +163,13 @@ for fighter_href in fighter_hrefs:
 
 driver.close()
 print(fighter_hrefs)
+
+
+x = driver.find_elements_by_class_name('max-number')
+
+for i, y in enumerate(x):
+    x[i] = y.get_attribute('innerText')
+    
+for i, y in enumerate(stats):
+    benavidez.append(y.get_attribute('innerText'))
 
