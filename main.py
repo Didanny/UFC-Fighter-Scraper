@@ -197,5 +197,40 @@ for fighter_href in fighter_hrefs:
 #        print(stats[i + 1].get_attribute('alt'))
     
 
-    
+# Go to the first page of past events
+driver.get('http://www.ufc.com/event/Past_Events')
 
+# List to store the past event hrefs
+past_event_hrefs = []
+
+# Get the past event hrefs from the first page
+past_events = driver.find_elements_by_css_selector('.event-title a')
+for past_event in past_events:
+    past_event_hrefs.append(past_event.get_attribute('href'))
+
+def next_found():
+    try:
+        driver.find_element_by_class_name('nextLink')
+        return True
+    except:
+        return False
+
+# Visit all pages and collect the past event hrefs 
+while next_found():
+    nextLink =  driver.find_element_by_class_name('nextLink').get_attribute('href')
+    driver.get(nextLink)
+    
+    past_events = driver.find_elements_by_css_selector('.event-title a')
+    for past_event in past_events:
+        past_event_hrefs.append(past_event.get_attribute('href'))
+        
+        
+# Get all past event info
+for past_event_href in past_event_hrefs:
+    driver.get(past_event_href)
+    
+    
+    
+    
+    
+    
