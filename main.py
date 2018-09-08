@@ -146,12 +146,21 @@ for fighter_href in fighter_hrefs:
         pass
     
     try:
+#        stats = driver.find_elements_by_css_selector('.cufon.cufon-canvas')
+#        for i, stat in stats:
+#            stat = stat.get_attribute('alt')
+#            if stat == 'Striking':
+#                fighter['striking_defense'] = stats[i + 1].get_attribute('alt')
+#            if stats == 'Grappling':
+#                fighter['takedown_defense'] = stats[i + 1].get_attribute('alt')
+        
         stats = driver.find_elements_by_css_selector('.cufon.cufon-canvas')
-        for i, stat in stats:
-            stat = stat.get_attribute('alt')
-            if stat == 'Striking':
+        for i,stat in enumerate(stats):
+            if stat.get_attribute('alt') == 'Striking':
+#                print(stats[i + 1].get_attribute('alt'))
                 fighter['striking_defense'] = stats[i + 1].get_attribute('alt')
-            if stats == 'Grappling':
+            if stat.get_attribute('alt') == 'Grappling':
+#                print(stats[i + 1].get_attribute('alt'))
                 fighter['takedown_defense'] = stats[i + 1].get_attribute('alt')
     except:
         pass
@@ -161,15 +170,32 @@ for fighter_href in fighter_hrefs:
 
 
 
-driver.close()
-print(fighter_hrefs)
-
-
-x = driver.find_elements_by_class_name('max-number')
-
-for i, y in enumerate(x):
-    x[i] = y.get_attribute('innerText')
+#driver.close()
+#print(fighter_hrefs)
+#
+#benavidez = []
+#beltran = []
+#
+#driver.get('http://www.ufc.com/fighter/Joseph-Benavidez')
+#
+#stats = driver.find_elements_by_css_selector('.cufon.cufon-canvas')
+#for i,stat in enumerate(stats):
+#    benavidez.append(stat.get_attribute('alt'))
+#    if stat.get_attribute('alt') == 'Striking':
+#        print(stats[i + 1].get_attribute('alt'))
+#    if stat.get_attribute('alt') == 'Grappling':
+#        print(stats[i + 1].get_attribute('alt'))
+#    
+#driver.get('http://www.ufc.com/fighter/Marco-Beltran')
+#
+#stats = driver.find_elements_by_css_selector('.cufon.cufon-canvas')
+#for i,stat in enumerate(stats):
+#    beltran.append(stat.get_attribute('alt'))
+#    if stat.get_attribute('alt') == 'Striking':
+#        print(stats[i + 1].get_attribute('alt'))
+#    if stat.get_attribute('alt') == 'Grappling':
+#        print(stats[i + 1].get_attribute('alt'))
     
-for i, y in enumerate(stats):
-    benavidez.append(y.get_attribute('innerText'))
+
+    
 
